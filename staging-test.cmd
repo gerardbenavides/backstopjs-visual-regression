@@ -1,0 +1,1 @@
+backstop test --configPath=backstop-settings.js --pathfile=path --testhost=https://staging.a4.angebot.se

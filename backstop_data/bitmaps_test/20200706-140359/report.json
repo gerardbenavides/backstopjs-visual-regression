@@ -1,0 +1,29 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\prod_test___0_document_0_desktop.png",
+        "test": "..\\bitmaps_test\\20200706-140359\\prod_test___0_document_0_desktop.png",
+        "selector": "document",
+        "fileName": "prod_test___0_document_0_desktop.png",
+        "label": "/",
+        "misMatchThreshold": 0.1,
+        "url": "https://staging.a4.angebot.se/",
+        "referenceUrl": "https://izonen.usefulsolutions.se/",
+        "expect": 0,
+        "viewportLabel": "desktop",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "id": "prod_test"
+}

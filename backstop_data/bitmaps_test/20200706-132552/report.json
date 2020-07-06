@@ -1,0 +1,32 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\Angebot_Login_0_document_0_tablet.png",
+        "test": "..\\bitmaps_test\\20200706-132552\\Angebot_Login_0_document_0_tablet.png",
+        "selector": "document",
+        "fileName": "Angebot_Login_0_document_0_tablet.png",
+        "label": "Login",
+        "requireSameDimensions": true,
+        "misMatchThreshold": 0.1,
+        "url": "https://staging.a4.angebot.se/auth/forgot_password",
+        "referenceUrl": "",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "53.24",
+          "analysisTime": 30
+        },
+        "diffImage": "..\\bitmaps_test\\20200706-132552\\failed_diff_Angebot_Login_0_document_0_tablet.png"
+      },
+      "status": "fail"
+    }
+  ],
+  "id": "Angebot"
+}

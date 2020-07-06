@@ -1,0 +1,22 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "..\\bitmaps_reference\\Angebot___0_document_0_desktop.png",
+        "test": "..\\bitmaps_test\\20200706-140933\\Angebot___0_document_0_desktop.png",
+        "selector": "document",
+        "fileName": "Angebot___0_document_0_desktop.png",
+        "label": "/",
+        "misMatchThreshold": 0.1,
+        "url": "https://staging.a4.angebot.se/",
+        "referenceUrl": "https://izonen.usefulsolutions.se/",
+        "expect": 0,
+        "viewportLabel": "desktop",
+        "error": "Reference file not found C:\\Users\\Netzon-Poii\\Desktop\\Test\\Angebot\\angebot_visual\\backstop_data\\bitmaps_reference\\Angebot___0_document_0_desktop.png"
+      },
+      "status": "fail"
+    }
+  ],
+  "id": "Angebot"
+}
