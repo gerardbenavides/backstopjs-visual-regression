@@ -1,92 +1,96 @@
-/*
-  How to use
+/* 
+  backstop reference --configPath=backstop-settings.js --pathFile=paths --env=staging --refHost=https://staging.a4.angebot.se/
+  backstop test --configPath=backstop-settings.js --pathFile=paths --env=staging --testHost=https://staging.a4.angebot.se/
+  backstop reference --configPath=backstop-settings.js --pathFile=paths --env=prod --refHost=https://izonen.usefulsolutions.se/
+  backstop test --configPath=backstop-settings.js --pathFile=paths --env=prod --testHost=https://izonen.usefulsolutions.se/
+*/
 
-  backstop reference --configPath=backstop-settings.js
-       backstop test --configPath=backstop-settings.js
+var args = require('minimist')(process.argv.slice(2)); // grabs the process arguments
+var defaultPaths = ['/']; // default path just checks the homepage as a quick smoke test
+var scenarios = []; // The array that'll have the URL paths to check
 
-  backstop reference --configPath=backstop-settings.js --refhost=http://example.com
-       backstop test --configPath=backstop-settings.js --testhost=http://example.com
+// env argument will capture the environment URL
+// if you use one of the options below to pass in, e.g. --env=dev
+var environments = {
+  'dev': 'http://example.com',
+  'staging': 'https://staging.a4.angebot.se/',
+  'prod': 'https://izonen.usefulsolutions.se/'
+};
+var default_environment = 'prod';
 
-  backstop reference --configPath=backstop-settings.js --paths=/,/contact
-       backstop test --configPath=backstop-settings.js --paths=/,/contact
-
-  backstop reference --configPath=backstop-settings.js --pathfile=paths
-       backstop test --configPath=backstop-settings.js --pathfile=paths
-
- */
-
-/*
-  Set up some variables
- */
-var arguments = require('minimist')(process.argv.slice(2)); // grabs the process arguments
-var defaultPaths = ['/']; // By default is just checks the homepage
-var scenarios = []; // The array that'll have the pages to test
-
-/*
-  Work out the environments that are being compared
- */
-// The host to test
-if (!arguments.testhost) {
-  arguments.testhost  = "https://staging.a4.angebot.se"; // Default test host. TO SPECIFICY REF HOST. INCLUDE --testhost=https://example.com
+// Environments that are being compared
+if (!args.env) {
+  args.env = default_environment;
 }
-// The host to reference
-if (!arguments.refhost) {
-  arguments.refhost  = "https://izonen.usefulsolutions.se"; // Default test host. TO SPECIFICY REF HOST. INCLUDE --refhost=https://example.com
+// if you pass in a bogus environment, it’ll still use the default environment
+else if (!environments.hasOwnProperty(args.env)) {
+  args.env = default_environment;
 }
-/*
-  Work out which paths to use, either a supplied array, an array from a file, or the defaults
- */
-if (arguments.paths) {
-  pathString = arguments.paths;
-  var paths = pathString.split(',');
-} else if (arguments.pathfile) {
-  var pathConfig = require('./'+arguments.pathfile+'.js');
+
+// Site for reference screenshots
+if (!args.refHost) {
+  args.refHost = environments[args.env];
+}
+
+// Site for test screenshots
+if (!args.testHost) {
+  args.testHost = environments[args.env];
+}
+
+// Directories to save screenshots
+var saveDirectories = {
+  "bitmaps_reference": "./backstop_data/"+args.env+"_reference",
+  "bitmaps_test": "./backstop_data/"+args.env+"_test",
+  "html_report": "./backstop_data/"+args.env+"_html_report",
+  "ci_report": "./backstop_data/"+args.env+"_ci_report"
+};
+
+// Work out which paths to use: an array from a file, a supplied array, or defaults
+// We'll be using the array from paths.js
+if (args.pathFile) {
+  var pathConfig = require('./'+args.pathFile+'.js'); // use paths.js file
   var paths = pathConfig.array;
+} else if (args.paths) {
+  pathString = args.paths; // pass in a comma-separated list of paths in terminal
+  var paths = pathString.split(',');
 } else {
   var paths = defaultPaths; // keep with the default of just the homepage
 }
 
-
+// Scenarios are a default part of config for BackstopJS
+// Explanations for the sections below are at https://www.npmjs.com/package/backstopjs
 for (var k = 0; k < paths.length; k++) {
-  scenarios.push({
-    "label": paths[k],
-    "referenceUrl": arguments.refhost+paths[k],
-    "url": arguments.testhost+paths[k],
-    "hideSelectors": [],
-    "removeSelectors": [],
-    "selectors": [],
-    "readyEvent": null,
-    "delay": 500,
-    "misMatchThreshold" : 0.1,
-    "onBeforeScript": "puppet/onBefore.js",
-    "onReadyScript": "puppet/onReady.js"
-  });
+  scenarios.push (
+    {
+      "label": paths[k],
+      "referenceUrl": args.refHost+paths[k],
+      "url": args.testHost+paths[k],
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "selectors": ["document"], // "document" will snapshot the entire page
+      "delay": 1000,
+      "misMatchThreshold" : 0.1
+    }
+  );
 }
 
-// Configuration
+// BackstopJS configuration
 module.exports =
 {
-  "id": "Angebot",
+  "id": "Angebot_"+args.env+"_config",
   "viewports": [
     {
-      "name": "1366x786",
+      "name": "1366x768",
       "width": 1366,
       "height": 768
     },
-
   ],
   "scenarios":
-    scenarios
-  ,
-  "paths": {
-    "bitmaps_reference": "backstop_data/bitmaps_reference",
-    "bitmaps_test":      "backstop_data/bitmaps_test",
-    "casper_scripts":    "backstop_data/casper_scripts",
-    "html_report":       "backstop_data/html_report",
-    "ci_report":         "backstop_data/ci_report"
-  },
-  "casperFlags": [],
-  "engine": "puppeter",
+    scenarios,
+  "paths":
+    saveDirectories,
+  "casperFlags": ["--ignore-ssl-errors=true", "--ssl-protocol=any"],
+  "engine": "puppet", // alternate can be slimerjs
   "report": ["browser"],
-  "debug": true
+  "debug": false
 };

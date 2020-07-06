@@ -1,0 +1,7 @@
+*.png
+/backstop_data/bitmaps_test
+/backstop_data/html_report
+/backstop_data/prod_html_report
+/backstop_data/prod_test
+/backstop_data/staging_html_report
+/backstop_data/staging_test

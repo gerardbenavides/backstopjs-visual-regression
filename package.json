@@ -1,15 +1,15 @@
 {
-    "name": "visual-testing-backstopjs",
+    "name": "visual_regression-master",
     "version": "1.0.0",
     "description": "Visual Regression Test Automation Framework",
     "author": "Gerard Paul Benavides",
     "scripts": {
-        "reference:prod": "backstop reference --configPath=backstop-settings.js --pathfile=path --refhost=https://izonen.usefulsolutions.se",
-        "approve:prod": "backstop approve",
-        "test:prod": "backstop test --configPath=backstop-settings.js --pathfile=path --testhost=https://izonen.usefulsolutions.se",
-        "reference:staging": "backstop reference --configPath=backstop-settings.js --pathfile=path --refhost=https://staging.a4.angebot.se/",
-        "approve:staging": "backstop approve",
-        "test:staging": "backstop test --configPath=backstop-settings.js --pathfile=path --testhost=https://staging.a4.angebot.se/",
+        "prod:reference": "backstop reference --configPath=backstop-settings.js --pathfile=path --refhost=https://izonen.usefulsolutions.se",
+        "prod:approve": "backstop approve",
+        "prod:test": "backstop test --configPath=backstop-settings.js --pathfile=path --testhost=https://izonen.usefulsolutions.se",
+        "staging:reference": "backstop reference --configPath=backstop-settings.js --pathFile=paths --env=staging --refHost=https://staging.a4.angebot.se/",
+        "staging:approve": "backstop approve",
+        "staging:test": "backstop test --configPath=backstop-settings.js --pathFile=paths --env=staging --refHost=https://staging.a4.angebot.se/"
 
     },
     "dependencies": {
