@@ -1,1 +1,0 @@
-backstop reference --configPath=backstop-settings.js --pathfile=path --refhost=https://staging.a4.angebot.se
